@@ -1,39 +1,48 @@
 library(shiny)
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
 
-    # Application title
-    titlePanel("Shiny App"),
+  div(
+    class = "app",
 
-    # Sidebar with a slider input for number of bins 
+    # PAGE HEADER
+    tags$header(
+      class = "app__header",
+      h1(class = "app__heading", "ShinyDashboard"),
+      img(class = "app__logo", src = "svg/logo.svg")
+    ),
+
+    # Sidebar with a slider input for number of bins
     sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 20)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
+      sidebarPanel(
+        sliderInput(
+          "bins",
+          "Number of bins:",
+          min = 1,
+          max = 50,
+          value = 30
         )
+      ),
+
+      # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("distPlot")
+      )
     )
+  )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = '#AC2476', border = 'white')
-    })
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+  
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = '#AC2476', border = 'white')
+  })
 }
 
 # Run the application 
