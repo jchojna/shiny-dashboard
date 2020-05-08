@@ -1,7 +1,7 @@
 @import "_mixins.scss";
 @import "_variables.scss";
 
-.TextPanel {
+.textPanel {
   align-items: center;
   background-color: #fff;
   border-radius: $corner;
@@ -14,7 +14,7 @@
   grid-template-columns: 1fr auto;
   grid-template-rows: 1fr auto;
   overflow: hidden;
-  //width: 100%;
+  width: 100%;
 
   &--income {
     grid-area: income;

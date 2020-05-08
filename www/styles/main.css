@@ -468,7 +468,7 @@
   padding: 10px !important;
 }
 
-.TextPanel {
+.textPanel {
   align-items: center;
   background-color: #fff;
   border-radius: 5px;
@@ -478,20 +478,21 @@
   grid-template-columns: 1fr auto;
   grid-template-rows: 1fr auto;
   overflow: hidden;
+  width: 100%;
 }
-.TextPanel--income {
+.textPanel--income {
   grid-area: income;
 }
-.TextPanel--users {
+.textPanel--users {
   grid-area: users;
 }
-.TextPanel--orders {
+.textPanel--orders {
   grid-area: orders;
 }
-.TextPanel--complaints {
+.textPanel--complaints {
   grid-area: complaints;
 }
-.TextPanel__header {
+.textPanel__header {
   align-items: center;
   background-color: #ddd;
   display: flex;
@@ -499,22 +500,22 @@
   justify-content: space-between;
   width: 100%;
 }
-.TextPanel__heading {
+.textPanel__heading {
   font-size: 0.9rem;
   text-transform: uppercase;
 }
-.TextPanel__heading, .TextPanel__value, .TextPanel__percentage {
+.textPanel__heading, .textPanel__value, .textPanel__percentage {
   margin: 0;
   padding: 5px;
   padding-left: 15px;
 }
-.TextPanel__value {
+.textPanel__value {
   font-size: 1.6em;
   font-weight: bold;
   grid-area: value;
   padding-top: 0;
 }
-.TextPanel__percentage {
+.textPanel__percentage {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -523,11 +524,11 @@
   justify-self: end;
   padding-bottom: 0;
 }
-.TextPanel__percentage--positive {
+.textPanel__percentage--positive {
   color: #bcd74a;
   stroke: #bcd74a;
 }
-.TextPanel__percentage--negative {
+.textPanel__percentage--negative {
   color: #fa5050;
   stroke: #fa5050;
 }

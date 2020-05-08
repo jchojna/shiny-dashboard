@@ -42,18 +42,17 @@ ui <- fluidPage(
   tags$header(
     class = "app__header app__header--main",
     h1(class = "app__heading", "shinyDashboard"),
-    HTML(
-      "
+    HTML("
       <svg class = 'app__logo' viewBox = '0 0 100 100'>
         <use href = 'svg/icons.svg#logo'></use>
       </svg>
-    "
-    )
+    ")
   ),
   
+  # STATS SECTION ----
   tags$section(
     class = "app__section app__section--stats",
-    
+    # STATS HEADER ----
     tags$header(
       class = "app__header app__header--stats",
       h2(class = "app__heading app__heading--section", "Recent"),
@@ -63,19 +62,60 @@ ui <- fluidPage(
           list("Today", "Yesterday", "Last Week", "Last Month", "Last Year")
         )
       )
-    )
+    ),
+    # STATS INCOME ----
+    tags$section(
+      class="textPanel textPanel--income",
+      tags$header(
+        class = "textPanel__header",
+        h3(class = "textPanel__heading", "Total Income"),
+        HTML("
+          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+            <use href = 'svg/icons.svg#income'></use>
+          </svg>
+        ")
+      )
+    ),
+    # STATS USERS ----
+    tags$section(
+      class="textPanel textPanel--users",
+      tags$header(
+        class = "textPanel__header",
+        h3(class = "textPanel__heading", "Active Users"),
+        HTML("
+          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+            <use href = 'svg/icons.svg#users'></use>
+          </svg>
+        ")
+      )
+    ),
+    # STATS ORDERS ----
+    tags$section(
+      class="textPanel textPanel--orders",
+      tags$header(
+        class = "textPanel__header",
+        h3(class = "textPanel__heading", "New Orders"),
+        HTML("
+          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+            <use href = 'svg/icons.svg#orders'></use>
+          </svg>
+        ")
+      )
+    ),
+    # STATS COMPLAINTS ----
+    tags$section(
+      class="textPanel textPanel--complaints",
+      tags$header(
+        class = "textPanel__header",
+        h3(class = "textPanel__heading", "Open Complaints"),
+        HTML("
+          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+            <use href = 'svg/icons.svg#complaints'></use>
+          </svg>
+        ")
+      )
+    ),
   ),
-  
-  
-  
-  #   <Dropdown
-  # currentId={period}
-  # type="period"
-  # isDataLoading={isDataLoading}
-  # menuList={statsPeriods}
-  # onMenuClick={this.handleStats}
-  # />
-  
   
   
   
