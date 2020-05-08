@@ -51,19 +51,41 @@ ui <- fluidPage(
     )
   ),
   
-  # Sidebar with a slider input for number of bins
-  sidebarLayout(sidebarPanel(
-    sliderInput(
-      "bins",
-      "Number of bins:",
-      min = 1,
-      max = 50,
-      value = 30
+  tags$section(
+    class = "app__section app__section--stats",
+    
+    tags$header(
+      class = "app__header app__header--stats",
+      h2(class = "app__heading app__heading--section", "Recent"),
+      div(
+        class = "dropdown dropdown--period",
+        selectInput("period", "",
+          list("Today", "Yesterday", "Last Week", "Last Month", "Last Year")
+        )
+      )
     )
   ),
   
-  # Show a plot of the generated distribution
-  mainPanel(plotOutput("distPlot")))
+  
+  
+  #   <Dropdown
+  # currentId={period}
+  # type="period"
+  # isDataLoading={isDataLoading}
+  # menuList={statsPeriods}
+  # onMenuClick={this.handleStats}
+  # />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 )
 
 # Define server logic required to draw a histogram

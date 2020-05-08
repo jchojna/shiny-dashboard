@@ -36,15 +36,8 @@
     }
 
     &--stats {
-      grid-template-areas: "heading info period";
-      grid-template-columns: auto 1fr auto;
-
-      @media (max-width: $media-md) {
-        grid-template-areas:
-          "heading period"
-          "info    info  ";
-        grid-template-columns: 1fr auto;
-      }
+      grid-template-areas: "heading period";
+      grid-template-columns: 1fr auto;
     }
 
     &--analytics {
@@ -72,6 +65,7 @@
     align-self: flex-end;
     color: $color-dark;
     font-size: 1.6em;
+    font-weight: bold;
     margin: 0;
 
     &--section {

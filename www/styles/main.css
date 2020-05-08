@@ -53,14 +53,8 @@
   justify-content: flex-end;
 }
 .app__header--stats {
-  grid-template-areas: "heading info period";
-  grid-template-columns: auto 1fr auto;
-}
-@media (max-width: 1100px) {
-  .app__header--stats {
-    grid-template-areas: "heading period" "info    info  ";
-    grid-template-columns: 1fr auto;
-  }
+  grid-template-areas: "heading period";
+  grid-template-columns: 1fr auto;
 }
 .app__header--analytics {
   grid-template-areas: "heading field month year";
@@ -82,6 +76,7 @@
   align-self: flex-end;
   color: #555;
   font-size: 1.6em;
+  font-weight: bold;
   margin: 0;
 }
 .app__heading--section {
@@ -285,22 +280,22 @@
     transform: scale(2);
   }
 }
-.Dropdown {
+.dropdown {
   position: relative;
 }
-.Dropdown--period {
+.dropdown--period {
   grid-area: period;
 }
-.Dropdown--field {
+.dropdown--field {
   grid-area: field;
 }
-.Dropdown--month {
+.dropdown--month {
   grid-area: month;
 }
-.Dropdown--year {
+.dropdown--year {
   grid-area: year;
 }
-.Dropdown__button {
+.dropdown__button {
   background: none;
   border: none;
   color: #555;
@@ -321,26 +316,26 @@
   transition: background-color 0.2s;
   width: 100%;
 }
-.Dropdown__button--menu {
+.dropdown__button--menu {
   justify-content: flex-start;
   border-radius: initial;
 }
-.Dropdown__button--year {
+.dropdown__button--year {
   min-width: 6em;
 }
-.Dropdown__button--active {
+.dropdown__button--active {
   background-color: #ccc;
 }
-.Dropdown__button--disabled {
+.dropdown__button--disabled {
   pointer-events: none;
 }
-.Dropdown__button:hover {
+.dropdown__button:hover {
   background-color: #ccc;
 }
-.Dropdown__label {
+.dropdown__label {
   margin-right: 10px;
 }
-.Dropdown__list {
+.dropdown__list {
   animation: dropdownMenu 0.25s;
   background-color: #eee;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
