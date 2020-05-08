@@ -1,0 +1,76 @@
+@import "_animations.scss";
+@import "_mixins.scss";
+@import "_variables.scss";
+
+.Dropdown {
+  position: relative;
+
+  &--period {
+    grid-area: period;
+  }
+
+  &--field {
+    grid-area: field;
+  }
+
+  &--month {
+    grid-area: month;
+  }
+
+  &--year {
+    grid-area: year;
+  }
+
+  &__button {
+    @include button;
+    align-items: center;
+    border-radius: $corner;
+    display: flex;
+    justify-content: space-between;
+    min-width: 8em;
+    padding: 10px;
+    text-align: left;
+    transition: background-color $time-hover;
+    width: 100%;
+
+    &--menu {
+      justify-content: flex-start;
+      border-radius: initial;
+    }
+  
+    &--year {
+      min-width: 6em;
+    }
+
+    &--active {
+      background-color: $color-light-1;
+    }
+
+    &--disabled {
+      pointer-events: none;
+    }
+
+    &:hover {
+      background-color: $color-light-1;
+    }
+  }
+
+  &__label {
+    margin-right: 10px;
+  }
+  
+  &__list {
+    animation: dropdownMenu 0.25s;
+    background-color: $color-light-3;
+    box-shadow: $section-shadow;
+    border-radius: $corner;
+    left: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 2;
+  }
+}

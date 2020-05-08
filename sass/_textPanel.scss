@@ -1,0 +1,81 @@
+@import "_mixins.scss";
+@import "_variables.scss";
+
+.TextPanel {
+  align-items: center;
+  background-color: #fff;
+  border-radius: $corner;
+  box-shadow: $section-shadow;
+  display: grid;
+  grid-template-areas:
+    "percent percent"
+    "value   value  "
+    "header  header ";
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  //width: 100%;
+
+  &--income {
+    grid-area: income;
+  }
+
+  &--users {
+    grid-area: users;
+  }
+
+  &--orders {
+    grid-area: orders;
+  }
+
+  &--complaints {
+    grid-area: complaints;
+  }
+
+  &__header {
+    align-items: center;
+    background-color: $color-light-2;
+    display: flex;
+    grid-area: header;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__heading {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+
+  &__heading,
+  &__value,
+  &__percentage {
+    margin: 0;
+    padding: $panel-padding;
+    padding-left: 15px;
+  }
+
+  &__value {
+    font-size: 1.6em;
+    font-weight: bold;
+    grid-area: value;
+    padding-top: 0;
+  }
+
+  &__percentage {
+    @include flex-center;
+    font-size: 1.2em;
+    grid-area: percent;
+    justify-self: end;
+    padding-bottom: 0;
+
+    &--positive {
+      color: $color-users;
+      stroke: $color-users;
+    }
+
+    &--negative {
+      color: $color-complaints;
+      stroke: $color-complaints;
+    }
+  }
+}

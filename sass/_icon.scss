@@ -1,0 +1,74 @@
+@import "_variables.scss";
+
+.Icon {
+  fill: none;
+  transition: transform 0.3s;
+
+  &--infographic {
+    background-color: $color-medium-2;
+    padding: 10px;
+    stroke: #fff;
+    stroke-width: 6;
+    width: 50px;
+  }
+
+  $icons: (
+    income: $color-income,
+    users: $color-users,
+    orders: $color-orders,
+    complaints: $color-complaints,
+  );
+
+  @each $name, $val in $icons {
+    &--#{$name} {
+      background-color: $val;
+    }
+  }
+
+  &--dropdown {
+    //fill: $color-dark;
+    height: 15px;
+    width: 15px;
+  }
+
+  &--minimize,
+  &--maximize {
+    fill: inherit;
+    height: 20px;
+    width: 20px;
+    padding: 0;
+  }
+  
+  &--export,
+  &--print {
+    height: 40px;
+    padding: 7px;
+    width: 40px;
+  }
+
+  &--indicator {
+    height: 20px;
+    margin-right: 5px;
+    stroke: inherit;
+    stroke-width: 10;
+    width: 20px;
+  }
+
+  &--logo {
+    fill: #000;
+    grid-area: logo;
+    height: 25px;
+    width: 25px;
+  }
+
+  &--mainLogo {
+    fill: $color-dark;
+    height: 20px;
+    margin-left: 5px;
+    width: 20px;
+  }
+
+  &--rotated {
+    transform: rotate(180deg);
+  }
+}

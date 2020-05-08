@@ -1,33 +1,29 @@
 library(shiny)
 
-ui <- fluidPage(
+ui <- fluidPage(theme = "styles/main.css", class = "app",
 
-  div(
-    class = "app",
-
-    # PAGE HEADER
-    tags$header(
-      class = "app__header",
-      h1(class = "app__heading", "ShinyDashboard"),
-      img(class = "app__logo", src = "svg/logo.svg")
-    ),
-
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-      sidebarPanel(
-        sliderInput(
-          "bins",
-          "Number of bins:",
-          min = 1,
-          max = 50,
-          value = 30
-        )
-      ),
-
-      # Show a plot of the generated distribution
-      mainPanel(
-        plotOutput("distPlot")
+  # PAGE HEADER
+  tags$header(
+    class = "app__header",
+    h1(class = "app__heading", "ShinyDashboard"),
+    img(class = "app__logo", src = "svg/logo.svg")
+  ),
+  
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(
+        "bins",
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30
       )
+    ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
     )
   )
 )

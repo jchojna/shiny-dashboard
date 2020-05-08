@@ -1,0 +1,32 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+.BarChart {
+  background-color: $color-light-3;
+  width: 100%;
+  height: 100%;
+}
+
+.tooltip {
+
+  &__heading,
+  &__text {
+    font-size: 1rem;
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  &__text {
+    font-size: 0.8rem;
+    margin: 0;
+    text-transform: capitalize;
+
+    &--bold {
+      font-weight: bold;
+    }
+  }
+
+  &__heading {
+    margin-bottom: 5px;
+  }
+}
