@@ -354,25 +354,6 @@
   fill: none;
   transition: transform 0.3s;
 }
-.Icon--infographic {
-  background-color: #999;
-  padding: 10px;
-  stroke: #fff;
-  stroke-width: 6;
-  width: 50px;
-}
-.Icon--income {
-  background-color: #29bfd7;
-}
-.Icon--users {
-  background-color: #bcd74a;
-}
-.Icon--orders {
-  background-color: #fe9833;
-}
-.Icon--complaints {
-  background-color: #fa5050;
-}
 .Icon--dropdown {
   height: 15px;
   width: 15px;
@@ -502,6 +483,7 @@
 }
 .textPanel__heading {
   font-size: 0.9rem;
+  font-weight: bold;
   text-transform: uppercase;
 }
 .textPanel__heading, .textPanel__value, .textPanel__percentage {
@@ -531,6 +513,27 @@
 .textPanel__percentage--negative {
   color: #fa5050;
   stroke: #fa5050;
+}
+.textPanel__icon {
+  fill: none;
+  transition: transform 0.3s;
+  background-color: #999;
+  padding: 10px;
+  stroke: #fff;
+  stroke-width: 6;
+  width: 50px;
+}
+.textPanel__icon--income {
+  background-color: #29bfd7;
+}
+.textPanel__icon--users {
+  background-color: #bcd74a;
+}
+.textPanel__icon--orders {
+  background-color: #fe9833;
+}
+.textPanel__icon--complaints {
+  background-color: #fa5050;
 }
 
 .VisualPanel {
@@ -635,6 +638,7 @@
 
 html {
   box-sizing: border-box;
+  font-size: 16px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   -webkit-print-color-adjust: exact;

@@ -52,6 +52,7 @@ ui <- fluidPage(
   # STATS SECTION ----
   tags$section(
     class = "app__section app__section--stats",
+    
     # STATS HEADER ----
     tags$header(
       class = "app__header app__header--stats",
@@ -63,6 +64,7 @@ ui <- fluidPage(
         )
       )
     ),
+    
     # STATS INCOME ----
     tags$section(
       class="textPanel textPanel--income",
@@ -70,12 +72,22 @@ ui <- fluidPage(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "Total Income"),
         HTML("
-          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+          <svg
+            class = 'textPanel__icon textPanel__icon--income'
+            viewBox = '0 0 100 100'
+          >
             <use href = 'svg/icons.svg#income'></use>
           </svg>
         ")
+      ),
+      p(class = "textPanel__value", 45),
+      div(
+        class = "textPanel__percentage",
+        # icon
+        span("+0.5%")
       )
     ),
+    
     # STATS USERS ----
     tags$section(
       class="textPanel textPanel--users",
@@ -83,10 +95,19 @@ ui <- fluidPage(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "Active Users"),
         HTML("
-          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+          <svg
+            class = 'textPanel__icon textPanel__icon--users'
+            viewBox = '0 0 100 100'
+          >
             <use href = 'svg/icons.svg#users'></use>
           </svg>
         ")
+      ),
+      p(class = "textPanel__value", 45),
+      div(
+        class = "textPanel__percentage",
+        # icon
+        span("+0.5%")
       )
     ),
     # STATS ORDERS ----
@@ -96,10 +117,19 @@ ui <- fluidPage(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "New Orders"),
         HTML("
-          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+          <svg
+            class = 'textPanel__icon textPanel__icon--orders'
+            viewBox = '0 0 100 100'
+          >
             <use href = 'svg/icons.svg#orders'></use>
           </svg>
         ")
+      ),
+      p(class = "textPanel__value", 45),
+      div(
+        class = "textPanel__percentage",
+        # icon
+        span("+0.5%")
       )
     ),
     # STATS COMPLAINTS ----
@@ -109,10 +139,19 @@ ui <- fluidPage(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "Open Complaints"),
         HTML("
-          <svg class = 'app__logo' viewBox = '0 0 100 100'>
+          <svg
+            class = 'textPanel__icon textPanel__icon--complaints'
+            viewBox = '0 0 100 100'
+          >
             <use href = 'svg/icons.svg#complaints'></use>
           </svg>
         ")
+      ),
+      p(class = "textPanel__value", 45),
+      div(
+        class = "textPanel__percentage",
+        # icon
+        span("+0.5%")
       )
     ),
   ),

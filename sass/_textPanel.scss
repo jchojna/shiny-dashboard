@@ -43,6 +43,7 @@
 
   &__heading {
     font-size: 0.9rem;
+    font-weight: bold;
     text-transform: uppercase;
   }
 
@@ -76,6 +77,29 @@
     &--negative {
       color: $color-complaints;
       stroke: $color-complaints;
+    }
+  }
+
+  &__icon {
+    fill: none;
+    transition: transform 0.3s;
+    background-color: $color-medium-2;
+    padding: 10px;
+    stroke: #fff;
+    stroke-width: 6;
+    width: 50px;
+
+    $icons: (
+      income: $color-income,
+      users: $color-users,
+      orders: $color-orders,
+      complaints: $color-complaints,
+    );
+  
+    @each $name, $val in $icons {
+      &--#{$name} {
+        background-color: $val;
+      }
     }
   }
 }

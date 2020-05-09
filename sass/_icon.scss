@@ -4,27 +4,6 @@
   fill: none;
   transition: transform 0.3s;
 
-  &--infographic {
-    background-color: $color-medium-2;
-    padding: 10px;
-    stroke: #fff;
-    stroke-width: 6;
-    width: 50px;
-  }
-
-  $icons: (
-    income: $color-income,
-    users: $color-users,
-    orders: $color-orders,
-    complaints: $color-complaints,
-  );
-
-  @each $name, $val in $icons {
-    &--#{$name} {
-      background-color: $val;
-    }
-  }
-
   &--dropdown {
     //fill: $color-dark;
     height: 15px;
