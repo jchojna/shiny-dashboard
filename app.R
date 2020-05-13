@@ -1,5 +1,21 @@
 library(shiny)
 
+# FUNCTIONS ----
+svgIcon <- function(id) {
+  return (
+    HTML(
+      paste(
+        "<svg
+          class = 'textPanel__icon textPanel__icon--", id, "'
+          viewBox = '0 0 100 100'
+        >
+          <use href = 'svg/icons.svg#", id, "'></use>
+        </svg>", sep=""
+      )
+    )
+  )
+}
+
 ui <- fluidPage(
   theme = "styles/main.css",
   class = "app",
@@ -71,14 +87,7 @@ ui <- fluidPage(
       tags$header(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "Total Income"),
-        HTML("
-          <svg
-            class = 'textPanel__icon textPanel__icon--income'
-            viewBox = '0 0 100 100'
-          >
-            <use href = 'svg/icons.svg#income'></use>
-          </svg>
-        ")
+        svgIcon("income")
       ),
       p(class = "textPanel__value", 45),
       div(
@@ -94,14 +103,7 @@ ui <- fluidPage(
       tags$header(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "Active Users"),
-        HTML("
-          <svg
-            class = 'textPanel__icon textPanel__icon--users'
-            viewBox = '0 0 100 100'
-          >
-            <use href = 'svg/icons.svg#users'></use>
-          </svg>
-        ")
+        svgIcon("users")
       ),
       p(class = "textPanel__value", 45),
       div(
@@ -116,14 +118,7 @@ ui <- fluidPage(
       tags$header(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "New Orders"),
-        HTML("
-          <svg
-            class = 'textPanel__icon textPanel__icon--orders'
-            viewBox = '0 0 100 100'
-          >
-            <use href = 'svg/icons.svg#orders'></use>
-          </svg>
-        ")
+        svgIcon("orders")
       ),
       p(class = "textPanel__value", 45),
       div(
@@ -138,14 +133,7 @@ ui <- fluidPage(
       tags$header(
         class = "textPanel__header",
         h3(class = "textPanel__heading", "Open Complaints"),
-        HTML("
-          <svg
-            class = 'textPanel__icon textPanel__icon--complaints'
-            viewBox = '0 0 100 100'
-          >
-            <use href = 'svg/icons.svg#complaints'></use>
-          </svg>
-        ")
+        svgIcon("complaints")
       ),
       p(class = "textPanel__value", 45),
       div(
@@ -155,11 +143,6 @@ ui <- fluidPage(
       )
     ),
   ),
-  
-  
-  
-  
-  
   
   
   
