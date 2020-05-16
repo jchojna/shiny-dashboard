@@ -1,7 +1,7 @@
 @import "_variables.scss";
 @import "_mixins.scss";
 
-.VisualPanel {
+.visualPanel {
   @include flex-center;
   background-color: #fff;
   border-radius: $corner;

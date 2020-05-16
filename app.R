@@ -16,6 +16,7 @@ svgIcon <- function(id) {
   )
 }
 
+# LAYOUT ----
 ui <- fluidPage(
   theme = "styles/main.css",
   class = "app",
@@ -76,7 +77,7 @@ ui <- fluidPage(
       div(
         class = "dropdown dropdown--period",
         selectInput("period", "",
-          list("Today", "Yesterday", "Last Week", "Last Month", "Last Year")
+          c("Today", "Yesterday", "Last Week", "Last Month", "Last Year")
         )
       )
     ),
@@ -112,6 +113,7 @@ ui <- fluidPage(
         span("+0.5%")
       )
     ),
+    
     # STATS ORDERS ----
     tags$section(
       class="textPanel textPanel--orders",
@@ -144,11 +146,97 @@ ui <- fluidPage(
     ),
   ),
   
-  
-  
-  
-  
+  # ANALYTICS SECTION ----
+  tags$section(
+    class = "app__section app__section--analytics",
+    
+    # ANALYTICS HEADER ----
+    tags$header(
+      class = "app__header app__header--analytics",
+      h2(class = "app__heading app__heading--section", "Analytics"),
+      div(
+        class = "dropdown dropdown--field",
+        selectInput("field", "",
+          c("Total Income", "Active Users", "New Orders", "Open Complaints")
+        )
+      ),
+      div(
+        class = "dropdown dropdown--month",
+        selectInput("field", "",
+          c("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december")
+        )
+      ),
+      div(
+        class = "dropdown dropdown--year",
+        selectInput("field", "",
+          c(2020, 2019, 2018, 2017)
+        )
+      ),
+    ),
+    
+    # HISTOGRAM SECTION ----
+    tags$section(
+      class="visualPanel visualPanel--histogram",
+      tags$header(
+        class = "visualPanel__header",
+        h3(class = "visualPanel__heading", "Total Income"),
+        tags$button(
+          class = "visualPanel__button",
+          "MAX"
+        )
+      ),
+      div(
+        class = "barChart"
+      )
+    ),
+    
+    # MAP SECTION ----
+    tags$section(
+      class="visualPanel visualPanel--map",
+      tags$header(
+        class = "visualPanel__header",
+        h3(class = "visualPanel__heading", "Map"),
+        tags$button(
+          class = "visualPanel__button",
+          "MAX"
+        )
+      ),
+      div(
+        class = "map"
+      )
+    ),
+    
+    # SUMMARY SECTION ----
+    tags$section(
+      class="visualPanel visualPanel--summary",
+      tags$header(
+        class = "visualPanel__header",
+        h3(class = "visualPanel__heading", "Summary"),
+        tags$button(
+          class = "visualPanel__button",
+          "MAX"
+        )
+      ),
+      div(
+        class = "barChart"
+      )
+    ),
+  )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
