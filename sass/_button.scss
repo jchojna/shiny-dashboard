@@ -1,7 +1,7 @@
 @import "_variables.scss";
 @import "_mixins.scss";
 
-.Button {
+.button {
   @include button;
   @include flex-center;
   background-color: $color-light-1;

@@ -175,7 +175,7 @@
 .tooltip__heading {
   margin-bottom: 5px; }
 
-.Button {
+.button {
   background: none;
   border: none;
   color: #555;
@@ -196,15 +196,15 @@
   overflow: hidden;
   text-transform: uppercase;
   transition: color 0.2s, background-color 0.2s; }
-  .Button--disabled {
+  .button--disabled {
     pointer-events: none; }
-  .Button:hover {
+  .button:hover {
     color: #fff;
     background-color: #999; }
   @media only screen and (max-width: 600px) {
-    .Button {
+    .button {
       min-width: 0; } }
-  .Button__text {
+  .button__text {
     padding-left: 10px; }
 
 @keyframes dropdownMenu {

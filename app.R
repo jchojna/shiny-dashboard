@@ -176,7 +176,7 @@ ui <- fluidPage(
     
     # HISTOGRAM SECTION ----
     tags$section(
-      class="visualPanel visualPanel--histogram",
+      class = "visualPanel visualPanel--histogram",
       tags$header(
         class = "visualPanel__header",
         h3(class = "visualPanel__heading", "Total Income"),
@@ -192,7 +192,7 @@ ui <- fluidPage(
     
     # MAP SECTION ----
     tags$section(
-      class="visualPanel visualPanel--map",
+      class = "visualPanel visualPanel--map",
       tags$header(
         class = "visualPanel__header",
         h3(class = "visualPanel__heading", "Map"),
@@ -208,7 +208,7 @@ ui <- fluidPage(
     
     # SUMMARY SECTION ----
     tags$section(
-      class="visualPanel visualPanel--summary",
+      class = "visualPanel visualPanel--summary",
       tags$header(
         class = "visualPanel__header",
         h3(class = "visualPanel__heading", "Summary"),
@@ -221,6 +221,13 @@ ui <- fluidPage(
         class = "barChart"
       )
     ),
+    
+    # FOOTER
+    tags$footer(
+      class = "app__footer",
+      tags$button(class = "button", tags$span(class = "button__text", "export")),
+      tags$button(class = "button", tags$span(class = "button__text", "print"))
+    )
   )
 )
 
