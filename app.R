@@ -1,4 +1,12 @@
 library(shiny)
+library(dplyr)
+library(readr)
+
+dataset <- read_csv("datasets/dataset.csv")
+
+totalComplaints <- dataset %>%
+  summary(mean = mean(complaints))
+print(totalComplaints)
 
 # FUNCTIONS ----
 svgIcon <- function(id) {
