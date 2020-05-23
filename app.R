@@ -3,10 +3,9 @@ library(dplyr)
 library(readr)
 
 dataset <- read_csv("datasets/dataset.csv")
+labels <- read_csv("datasets/labels.csv")
 
-totalComplaints <- dataset %>%
-  summary(mean = mean(complaints))
-print(totalComplaints)
+totalComplaints <- sum(dataset$income)
 
 # FUNCTIONS ----
 svgIcon <- function(id) {
@@ -84,9 +83,7 @@ ui <- fluidPage(
       h2(class = "app__heading app__heading--section", "Recent"),
       div(
         class = "dropdown dropdown--period",
-        selectInput("period", "",
-          c("Today", "Yesterday", "Last Week", "Last Month", "Last Year")
-        )
+        selectInput("period", "", na.omit(labels$period))
       )
     ),
     
@@ -164,15 +161,11 @@ ui <- fluidPage(
       h2(class = "app__heading app__heading--section", "Analytics"),
       div(
         class = "dropdown dropdown--field",
-        selectInput("field", "",
-          c("Total Income", "Active Users", "New Orders", "Open Complaints")
-        )
+        selectInput("field", "", na.omit(labels$field_label))
       ),
       div(
         class = "dropdown dropdown--month",
-        selectInput("field", "",
-          c("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december")
-        )
+        selectInput("field", "", labels$month_name)
       ),
       div(
         class = "dropdown dropdown--year",
@@ -230,7 +223,7 @@ ui <- fluidPage(
       )
     ),
     
-    # FOOTER
+    # FOOTER ----
     tags$footer(
       class = "app__footer",
       tags$button(class = "button", tags$span(class = "button__text", "export")),
@@ -248,12 +241,9 @@ ui <- fluidPage(
 
 
 
+#############
+# SERVER ----
 
-
-
-
-
-# Define server logic required to draw a histogram
 server <- function(input, output) {
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
@@ -268,5 +258,5 @@ server <- function(input, output) {
   })
 }
 
-# Run the application
+# Run the application ----
 shinyApp(ui = ui, server = server)
