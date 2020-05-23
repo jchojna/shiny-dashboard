@@ -22,7 +22,7 @@ svgIcon <- function(id) {
   )
 }
 
-getStatsValue <- function(period, field) {
+getStatsValue <- function(period, field, isPercentage) {
   
   lastDate <- "2020-05-21"
   yesterday <- as.character(as.Date(lastDate) %m-% days(1))
@@ -31,24 +31,62 @@ getStatsValue <- function(period, field) {
   if (period == "Today") {
     startDate <- yesterday
     
+    if(isPercentage) {
+      prevStartDate <- as.character(as.Date(lastDate) %m-% days(2))
+      prevEndDate <- startDate
+    }
+    
   } else if (period == "Yesterday") {
     startDate <- as.character(as.Date(lastDate) %m-% days(2))
     endDate <- yesterday
     
+    if(isPercentage) {
+      prevStartDate <- as.character(as.Date(lastDate) %m-% days(3))
+      prevEndDate <- startDate
+    }
+    
   } else if (period == "Last Week") {
     startDate <- as.character(as.Date(lastDate) %m-% weeks(1))
+    
+    if(isPercentage) {
+      prevStartDate <- as.character(as.Date(lastDate) %m-% weeks(2))
+      prevEndDate <- startDate
+    }
     
   } else if (period == "Last Month") {
     startDate <- as.character(as.Date(lastDate) %m-% months(1))
     
+    if(isPercentage) {
+      prevStartDate <- as.character(as.Date(lastDate) %m-% months(2))
+      prevEndDate <- startDate
+    }
+    
   } else if (period == "Last Year") {
     startDate <- as.character(as.Date(lastDate) %m-% years(1))
+    
+    if(isPercentage) {
+      prevStartDate <- as.character(as.Date(lastDate) %m-% years(2))
+      prevEndDate <- startDate
+    }
   }
   
-  dataset %>%
+  currentTotal <- dataset %>%
     filter(date > startDate & date <= endDate) %>%
     select(field) %>%
     sum()
+  
+  if (isPercentage) {
+    previousTotal <- dataset %>%
+      filter(date > prevStartDate & date <= prevEndDate) %>%
+      select(field) %>%
+      sum()
+    
+    percentage <- (currentTotal - previousTotal) / previousTotal
+    round(percentage, digits = 2)
+    
+  } else {
+    currentTotal
+  }
 }
 
 # ----
@@ -128,7 +166,7 @@ ui <- fluidPage(
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("incomePercent", inline = TRUE)
       )
     ),
     
@@ -144,7 +182,7 @@ ui <- fluidPage(
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("usersPercent", inline = TRUE)
       )
     ),
     
@@ -160,7 +198,7 @@ ui <- fluidPage(
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("ordersPercent", inline = TRUE)
       )
     ),
     # STATS COMPLAINTS ----
@@ -175,7 +213,7 @@ ui <- fluidPage(
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("complaintsPercent", inline = TRUE)
       )
     ),
   ),
@@ -275,28 +313,30 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
-  # INCOME OUTPUT ----
-  
+  # STATS OUTPUTS ----
   output$income <- renderText({
-    period <- getStatsValue(input$period, "income")
+    period <- getStatsValue(input$period, "income", FALSE)
   })
-  
-  # USERS OUTPUT ----
-  
   output$users <- renderText({
-    period <- getStatsValue(input$period, "users")
+    period <- getStatsValue(input$period, "users", FALSE)
   })
-  
-  # ORDERS OUTPUT ----
-  
   output$orders <- renderText({
-    period <- getStatsValue(input$period, "orders")
+    period <- getStatsValue(input$period, "orders", FALSE)
   })
-  
-  # COMPLAINTS OUTPUT ----
-  
   output$complaints <- renderText({
-    period <- getStatsValue(input$period, "complaints")
+    period <- getStatsValue(input$period, "complaints", FALSE)
+  })
+  output$incomePercent <- renderText({
+    period <- getStatsValue(input$period, "income", TRUE)
+  })
+  output$usersPercent <- renderText({
+    period <- getStatsValue(input$period, "users", TRUE)
+  })
+  output$ordersPercent <- renderText({
+    period <- getStatsValue(input$period, "orders", TRUE)
+  })
+  output$complaintsPercent <- renderText({
+    period <- getStatsValue(input$period, "complaints", TRUE)
   })
   
   
