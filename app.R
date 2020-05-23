@@ -95,7 +95,7 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "Total Income"),
         svgIcon("income")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("income", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
@@ -111,7 +111,7 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "Active Users"),
         svgIcon("users")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("users", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
@@ -127,7 +127,7 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "New Orders"),
         svgIcon("orders")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("orders", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
@@ -142,7 +142,7 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "Open Complaints"),
         svgIcon("complaints")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("complaints", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
@@ -245,17 +245,41 @@ ui <- fluidPage(
 # SERVER ----
 
 server <- function(input, output) {
-  output$distPlot <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x,
-         breaks = bins,
-         col = '#AC2476',
-         border = 'white')
+  
+  # INCOME OUTPUT ----
+  
+  output$income <- renderText({
+    x <- sum(dataset$income)
   })
+  
+  # USERS OUTPUT ----
+  
+  output$users <- renderText({
+    x <- sum(dataset$users)
+  })
+  
+  # ORDERS OUTPUT ----
+  
+  output$orders <- renderText({
+    x <- sum(dataset$orders)
+  })
+  
+  # COMPLAINTS OUTPUT ----
+  
+  output$complaints <- renderText({
+    x <- sum(dataset$complaints)
+  })
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
 # Run the application ----
