@@ -1,11 +1,12 @@
 library(shiny)
 library(dplyr)
 library(readr)
+library(lubridate)
 
 dataset <- read_csv("datasets/dataset.csv")
 labels <- read_csv("datasets/labels.csv")
 
-totalComplaints <- sum(dataset$income)
+lastDate <- "2020-05-21"
 
 # FUNCTIONS ----
 svgIcon <- function(id) {
@@ -23,6 +24,54 @@ svgIcon <- function(id) {
   )
 }
 
+getStatsValue <- function(period, field) {
+  
+  if (period == "Today") {
+    
+    dataset %>%
+      if (1 > 2) {
+        filter(date == lastDate)
+      } else {
+        filter(date == lastDate)
+      } %>%
+      select(field) %>%
+      sum()
+    
+  } else if (period == "Yesterday") {
+    
+    yesterday <- as.character(as.Date(lastDate) %m-% days(1))
+    dataset %>%
+      filter(date == yesterday) %>%
+      select(field) %>%
+      sum()
+    
+  } else if (period == "Last Week") {
+    
+    start <- as.character(as.Date(lastDate) %m-% weeks(1))
+    dataset %>%
+      filter(date > start & date <= lastDate) %>%
+      select(field) %>%
+      sum()
+    
+  } else if (period == "Last Month") {
+    
+    start <- as.character(as.Date(lastDate) %m-% months(1))
+    dataset %>%
+      filter(date > start & date <= lastDate) %>%
+      select(field) %>%
+      sum()
+    
+  } else if (period == "Last Year") {
+    
+    start <- as.character(as.Date(lastDate) %m-% years(1))
+    dataset %>%
+      filter(date > start & date <= lastDate) %>%
+      select(field) %>%
+      sum()
+  }
+}
+
+# ----
 # LAYOUT ----
 ui <- fluidPage(
   theme = "styles/main.css",
@@ -83,7 +132,7 @@ ui <- fluidPage(
       h2(class = "app__heading app__heading--section", "Recent"),
       div(
         class = "dropdown dropdown--period",
-        selectInput("period", "", na.omit(labels$period))
+        selectInput("period", "", na.omit(labels$period_name))
       )
     ),
     
@@ -241,7 +290,7 @@ ui <- fluidPage(
 
 
 
-#############
+# ----
 # SERVER ----
 
 server <- function(input, output) {
@@ -249,29 +298,29 @@ server <- function(input, output) {
   # INCOME OUTPUT ----
   
   output$income <- renderText({
-    x <- sum(dataset$income)
+    period <- getStatsValue(input$period, "income")
   })
   
   # USERS OUTPUT ----
   
   output$users <- renderText({
-    x <- sum(dataset$users)
+    period <- getStatsValue(input$period, "users")
   })
   
   # ORDERS OUTPUT ----
   
   output$orders <- renderText({
-    x <- sum(dataset$orders)
+    period <- getStatsValue(input$period, "orders")
   })
   
   # COMPLAINTS OUTPUT ----
   
   output$complaints <- renderText({
-    x <- sum(dataset$complaints)
+    period <- getStatsValue(input$period, "complaints")
   })
   
   
-  
+    
   
   
   
