@@ -6,8 +6,6 @@ library(lubridate)
 dataset <- read_csv("datasets/dataset.csv")
 labels <- read_csv("datasets/labels.csv")
 
-lastDate <- "2020-05-21"
-
 # FUNCTIONS ----
 svgIcon <- function(id) {
   return (
@@ -26,49 +24,31 @@ svgIcon <- function(id) {
 
 getStatsValue <- function(period, field) {
   
+  lastDate <- "2020-05-21"
+  yesterday <- as.character(as.Date(lastDate) %m-% days(1))
+  endDate <- lastDate
+  
   if (period == "Today") {
-    
-    dataset %>%
-      if (1 > 2) {
-        filter(date == lastDate)
-      } else {
-        filter(date == lastDate)
-      } %>%
-      select(field) %>%
-      sum()
+    startDate <- yesterday
     
   } else if (period == "Yesterday") {
-    
-    yesterday <- as.character(as.Date(lastDate) %m-% days(1))
-    dataset %>%
-      filter(date == yesterday) %>%
-      select(field) %>%
-      sum()
+    startDate <- as.character(as.Date(lastDate) %m-% days(2))
+    endDate <- yesterday
     
   } else if (period == "Last Week") {
-    
-    start <- as.character(as.Date(lastDate) %m-% weeks(1))
-    dataset %>%
-      filter(date > start & date <= lastDate) %>%
-      select(field) %>%
-      sum()
+    startDate <- as.character(as.Date(lastDate) %m-% weeks(1))
     
   } else if (period == "Last Month") {
-    
-    start <- as.character(as.Date(lastDate) %m-% months(1))
-    dataset %>%
-      filter(date > start & date <= lastDate) %>%
-      select(field) %>%
-      sum()
+    startDate <- as.character(as.Date(lastDate) %m-% months(1))
     
   } else if (period == "Last Year") {
-    
-    start <- as.character(as.Date(lastDate) %m-% years(1))
-    dataset %>%
-      filter(date > start & date <= lastDate) %>%
-      select(field) %>%
-      sum()
+    startDate <- as.character(as.Date(lastDate) %m-% years(1))
   }
+  
+  dataset %>%
+    filter(date > startDate & date <= endDate) %>%
+    select(field) %>%
+    sum()
 }
 
 # ----
