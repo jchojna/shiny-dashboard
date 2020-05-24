@@ -1,3 +1,5 @@
+node_modules
 .Rproj.user
 .RData
 .Rhistory
+.sass-cache

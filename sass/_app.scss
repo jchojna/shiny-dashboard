@@ -1,0 +1,231 @@
+@import "_mixins.scss";
+@import "_variables.scss";
+
+.app {
+  @include flex-center;
+  background-color: $color-light-3;
+  color: $color-dark;
+  display: flex;
+  flex-direction: column;
+  font-weight: normal;
+  height: 100%;
+  margin: 0;
+  min-height: 100vh;
+  min-width: 320px;
+  padding: 30px;
+  width: 100%;
+
+  @media only screen and (max-width: $media-sm) {
+    padding: 10px;
+  }
+
+  &__header,
+  &__footer {
+    align-items: center;
+    column-gap: 20px;
+    display: grid;
+    width: 100%;
+  }
+
+  &__header {
+    grid-area: header;
+
+    &--main {
+      @include flex-center;
+      justify-content: flex-end;
+    }
+
+    &--stats {
+      grid-template-areas: "heading period";
+      grid-template-columns: 1fr auto;
+    }
+
+    &--analytics {
+      grid-template-areas: "heading field month year";
+      grid-template-columns: 1fr repeat(3, auto);
+
+      @media only screen and (max-width: $media-md) {
+        grid-template-areas:
+          "heading month year "
+          ".       .     field";
+        grid-template-columns: 1fr repeat(2, auto);
+      }
+
+      @media only screen and (max-width: $media-sm) {
+        grid-template-areas:
+          "heading field"
+          ".       month"
+          ".       year ";
+        grid-template-columns: 1fr auto;
+      }
+    }
+  }
+
+  &__heading {
+    align-self: flex-end;
+    color: $color-dark;
+    font-size: 1.6em;
+    font-weight: bold;
+    margin: 0;
+
+    &--section {
+      align-self: center;
+      grid-area: heading;
+    }
+  }
+
+  &__logo {
+    fill: $color-dark;
+    height: 20px;
+    margin-left: 5px;
+    width: 20px;
+  }
+
+  &__info {
+    border-left: 1px solid $color-medium-2;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    grid-area: info;
+    margin: 0;
+    padding-left: 10px;
+
+    &--current {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    &--before {
+      color: $color-medium-2;
+      font-size: 0.8rem;
+    }
+
+    @media only screen and (max-width: $media-md) {
+      border: none;
+      border-top: 1px solid $color-medium-2;
+      padding: 0;
+      padding-top: 10px;
+      order: 1;
+      grid-column: 1 / 3;
+    }
+  }
+
+  &__section {
+    background-color: $color-light-2;
+    border-radius: $corner;
+    box-shadow: 0 2px 20px rgba($color: #000, $alpha: 0.1) inset,
+      0 2px 5px rgba($color: #000, $alpha: 0.3) inset;
+    display: grid;
+    gap: 20px;
+    max-width: 1200px;
+    padding: 30px;
+    position: relative;
+    width: 100%;
+
+    @media only screen and (max-width: $media-sm) {
+      padding: 15px;
+    }
+
+    &--stats {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas:
+        "header header header header    "
+        "income users  orders complaints";
+      margin: 30px 0;
+
+      @media (max-width: $media-md) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas:
+          "header header    "
+          "income users     "
+          "orders complaints";
+      }
+
+      @media only screen and (max-width: $media-sm) {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header    "
+          "income    "
+          "users     "
+          "orders    "
+          "complaints";
+      }
+    }
+
+    &--analytics {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "header    header"
+        "histogram map   "
+        "summary   map   "
+        "footer    footer";
+      grid-template-rows: auto 300px 250px auto;
+
+      @media (max-width: $media-md) {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header    "
+          "histogram "
+          "map       "
+          "summary   "
+          "footer";
+        grid-template-rows: auto 300px 400px 250px auto;
+      }
+    }
+
+    @media only screen and (min-width: $media-md) {
+      &--histogramMax {
+        grid-template-areas:
+          "header    header   "
+          "histogram histogram"
+          "summary   map      "
+          "footer    footer   ";
+        grid-template-rows: auto 300px 300px auto;
+      }
+
+      &--mapMax {
+        grid-template-areas:
+          "header    header "
+          "map       map    "
+          "histogram summary"
+          "footer    footer ";
+        grid-template-rows: auto 500px 250px auto;
+      }
+
+      &--summaryMax {
+        grid-template-areas:
+          "header    header "
+          "histogram map    "
+          "summary   summary"
+          "footer    footer ";
+      }
+    }
+  }
+
+  &__footer {
+    grid-area: footer;
+    grid-template-columns: repeat(2, auto);
+    justify-content: end;
+
+    @media only screen and (max-width: $media-sm) {
+      justify-content: stretch;
+    }
+  }
+}
+
+/* .loader {
+  @include flex-center;
+  animation: logo 0.8s alternate infinite ease-in-out;
+  border: 3px solid #000;
+  border-radius: 20%;
+  grid-area: loader;
+  height: 30px;
+  width: 30px;
+  z-index: 1;
+
+  &--panel {
+    border: 2px solid #fff;
+    height: 20px;
+    width: 20px;
+  }
+} */
