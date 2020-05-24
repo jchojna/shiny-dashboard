@@ -1,10 +1,17 @@
 library(shiny)
 library(dplyr)
 library(readr)
+library(tidyr)
 library(lubridate)
 
+# VARIABLES ----
 dataset <- read_csv("datasets/dataset.csv")
 labels <- read_csv("datasets/labels.csv")
+
+dataset <- dataset %>%
+  separate(date, c("year", "month", "day"), "-", remove = FALSE, convert = TRUE)
+
+years <- as.vector(unlist(distinct(dataset, year)))
 
 # FUNCTIONS ----
 svgIcon <- function(id) {
@@ -26,20 +33,19 @@ getStatsValue <- function(period, field, isPercentage) {
   
   lastDate <- "2020-05-21"
   yesterday <- as.character(as.Date(lastDate) %m-% days(1))
+  dayBeforeYesterday <- as.character(as.Date(lastDate) %m-% days(2))
   endDate <- lastDate
   
   if (period == "Today") {
     startDate <- yesterday
-    
     if(isPercentage) {
-      prevStartDate <- as.character(as.Date(lastDate) %m-% days(2))
+      prevStartDate <- dayBeforeYesterday
       prevEndDate <- startDate
     }
     
   } else if (period == "Yesterday") {
-    startDate <- as.character(as.Date(lastDate) %m-% days(2))
+    startDate <- dayBeforeYesterday
     endDate <- yesterday
-    
     if(isPercentage) {
       prevStartDate <- as.character(as.Date(lastDate) %m-% days(3))
       prevEndDate <- startDate
@@ -47,7 +53,6 @@ getStatsValue <- function(period, field, isPercentage) {
     
   } else if (period == "Last Week") {
     startDate <- as.character(as.Date(lastDate) %m-% weeks(1))
-    
     if(isPercentage) {
       prevStartDate <- as.character(as.Date(lastDate) %m-% weeks(2))
       prevEndDate <- startDate
@@ -55,7 +60,6 @@ getStatsValue <- function(period, field, isPercentage) {
     
   } else if (period == "Last Month") {
     startDate <- as.character(as.Date(lastDate) %m-% months(1))
-    
     if(isPercentage) {
       prevStartDate <- as.character(as.Date(lastDate) %m-% months(2))
       prevEndDate <- startDate
@@ -63,7 +67,6 @@ getStatsValue <- function(period, field, isPercentage) {
     
   } else if (period == "Last Year") {
     startDate <- as.character(as.Date(lastDate) %m-% years(1))
-    
     if(isPercentage) {
       prevStartDate <- as.character(as.Date(lastDate) %m-% years(2))
       prevEndDate <- startDate
@@ -236,9 +239,7 @@ ui <- fluidPage(
       ),
       div(
         class = "dropdown dropdown--year",
-        selectInput("field", "",
-          c(2020, 2019, 2018, 2017)
-        )
+        selectInput("field", "", years)
       ),
     ),
     
@@ -338,6 +339,8 @@ server <- function(input, output) {
   output$complaintsPercent <- renderText({
     period <- getStatsValue(input$period, "complaints", TRUE)
   })
+  
+  # HISTOGRAM OUTPUT ----
   
   
     
