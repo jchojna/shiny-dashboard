@@ -12,6 +12,9 @@ dataset <- dataset %>%
   separate(date, c("year", "month", "day"), "-", remove = FALSE, convert = TRUE)
 
 years <- as.vector(unlist(distinct(dataset, year)))
+lastDate <- "2020-05-21"
+yesterday <- as.character(as.Date(lastDate) %m-% days(1))
+dayBeforeYesterday <- as.character(as.Date(lastDate) %m-% days(2))
 
 # FUNCTIONS ----
 svgIcon <- function(id) {
@@ -29,66 +32,68 @@ svgIcon <- function(id) {
   )
 }
 
-getStatsValue <- function(period, field, isPercentage) {
-  
-  lastDate <- "2020-05-21"
-  yesterday <- as.character(as.Date(lastDate) %m-% days(1))
-  dayBeforeYesterday <- as.character(as.Date(lastDate) %m-% days(2))
+getStatsValue <- function(period, field) {
   endDate <- lastDate
   
   if (period == "Today") {
     startDate <- yesterday
-    if(isPercentage) {
-      prevStartDate <- dayBeforeYesterday
-      prevEndDate <- startDate
-    }
     
   } else if (period == "Yesterday") {
     startDate <- dayBeforeYesterday
     endDate <- yesterday
-    if(isPercentage) {
-      prevStartDate <- as.character(as.Date(lastDate) %m-% days(3))
-      prevEndDate <- startDate
-    }
     
   } else if (period == "Last Week") {
     startDate <- as.character(as.Date(lastDate) %m-% weeks(1))
-    if(isPercentage) {
-      prevStartDate <- as.character(as.Date(lastDate) %m-% weeks(2))
-      prevEndDate <- startDate
-    }
     
   } else if (period == "Last Month") {
     startDate <- as.character(as.Date(lastDate) %m-% months(1))
-    if(isPercentage) {
-      prevStartDate <- as.character(as.Date(lastDate) %m-% months(2))
-      prevEndDate <- startDate
-    }
     
   } else if (period == "Last Year") {
     startDate <- as.character(as.Date(lastDate) %m-% years(1))
-    if(isPercentage) {
-      prevStartDate <- as.character(as.Date(lastDate) %m-% years(2))
-      prevEndDate <- startDate
-    }
   }
   
   currentTotal <- dataset %>%
     filter(date > startDate & date <= endDate) %>%
     select(field) %>%
     sum()
+}
+
+getPercentValue <- function(period, field) {
   
-  if (isPercentage) {
-    previousTotal <- dataset %>%
-      filter(date > prevStartDate & date <= prevEndDate) %>%
-      select(field) %>%
-      sum()
+  if (period == "Today") {
+    prevStartDate <- dayBeforeYesterday
+    prevEndDate <- yesterday
     
-    percentage <- (currentTotal - previousTotal) / previousTotal
-    round(percentage, digits = 2)
+  } else if (period == "Yesterday") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% days(3))
+    prevEndDate <- dayBeforeYesterday
     
+  } else if (period == "Last Week") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% weeks(2))
+    prevEndDate <- as.character(as.Date(lastDate) %m-% weeks(1))
+    
+  } else if (period == "Last Month") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% months(2))
+    prevEndDate <- as.character(as.Date(lastDate) %m-% months(1))
+    
+  } else if (period == "Last Year") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% years(2))
+    prevEndDate <- as.character(as.Date(lastDate) %m-% years(1))
+  }
+  
+  currentTotal <- getStatsValue(period, field)
+  previousTotal <- dataset %>%
+    filter(date > prevStartDate & date <= prevEndDate) %>%
+    select(field) %>%
+    sum()
+  
+  percentage <- (currentTotal - previousTotal) / previousTotal
+  score <- abs(round(percentage, digits = 1))
+  
+  if (score == 0) {
+    "stable"
   } else {
-    currentTotal
+    paste(ifelse(percentage > 0, "+", "-"), score, sep="")
   }
 }
 
@@ -316,28 +321,28 @@ server <- function(input, output) {
   
   # STATS OUTPUTS ----
   output$income <- renderText({
-    period <- getStatsValue(input$period, "income", FALSE)
+    period <- getStatsValue(input$period, "income")
   })
   output$users <- renderText({
-    period <- getStatsValue(input$period, "users", FALSE)
+    period <- getStatsValue(input$period, "users")
   })
   output$orders <- renderText({
-    period <- getStatsValue(input$period, "orders", FALSE)
+    period <- getStatsValue(input$period, "orders")
   })
   output$complaints <- renderText({
-    period <- getStatsValue(input$period, "complaints", FALSE)
+    period <- getStatsValue(input$period, "complaints")
   })
   output$incomePercent <- renderText({
-    period <- getStatsValue(input$period, "income", TRUE)
+    period <- getPercentValue(input$period, "income")
   })
   output$usersPercent <- renderText({
-    period <- getStatsValue(input$period, "users", TRUE)
+    period <- getPercentValue(input$period, "users")
   })
   output$ordersPercent <- renderText({
-    period <- getStatsValue(input$period, "orders", TRUE)
+    period <- getPercentValue(input$period, "orders")
   })
   output$complaintsPercent <- renderText({
-    period <- getStatsValue(input$period, "complaints", TRUE)
+    period <- getPercentValue(input$period, "complaints")
   })
   
   # HISTOGRAM OUTPUT ----
