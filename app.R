@@ -1,4 +1,20 @@
 library(shiny)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(lubridate)
+
+# VARIABLES ----
+dataset <- read_csv("datasets/dataset.csv")
+labels <- read_csv("datasets/labels.csv")
+
+dataset <- dataset %>%
+  separate(date, c("year", "month", "day"), "-", remove = FALSE, convert = TRUE)
+
+years <- as.vector(unlist(distinct(dataset, year)))
+lastDate <- "2020-05-21"
+yesterday <- as.character(as.Date(lastDate) %m-% days(1))
+dayBeforeYesterday <- as.character(as.Date(lastDate) %m-% days(2))
 
 # FUNCTIONS ----
 svgIcon <- function(id) {
@@ -16,6 +32,72 @@ svgIcon <- function(id) {
   )
 }
 
+getStatsValue <- function(period, field) {
+  endDate <- lastDate
+  
+  if (period == "Today") {
+    startDate <- yesterday
+    
+  } else if (period == "Yesterday") {
+    startDate <- dayBeforeYesterday
+    endDate <- yesterday
+    
+  } else if (period == "Last Week") {
+    startDate <- as.character(as.Date(lastDate) %m-% weeks(1))
+    
+  } else if (period == "Last Month") {
+    startDate <- as.character(as.Date(lastDate) %m-% months(1))
+    
+  } else if (period == "Last Year") {
+    startDate <- as.character(as.Date(lastDate) %m-% years(1))
+  }
+  
+  currentTotal <- dataset %>%
+    filter(date > startDate & date <= endDate) %>%
+    select(field) %>%
+    sum()
+}
+
+getPercentValue <- function(period, field) {
+  
+  if (period == "Today") {
+    prevStartDate <- dayBeforeYesterday
+    prevEndDate <- yesterday
+    
+  } else if (period == "Yesterday") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% days(3))
+    prevEndDate <- dayBeforeYesterday
+    
+  } else if (period == "Last Week") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% weeks(2))
+    prevEndDate <- as.character(as.Date(lastDate) %m-% weeks(1))
+    
+  } else if (period == "Last Month") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% months(2))
+    prevEndDate <- as.character(as.Date(lastDate) %m-% months(1))
+    
+  } else if (period == "Last Year") {
+    prevStartDate <- as.character(as.Date(lastDate) %m-% years(2))
+    prevEndDate <- as.character(as.Date(lastDate) %m-% years(1))
+  }
+  
+  currentTotal <- getStatsValue(period, field)
+  previousTotal <- dataset %>%
+    filter(date > prevStartDate & date <= prevEndDate) %>%
+    select(field) %>%
+    sum()
+  
+  percentage <- (currentTotal - previousTotal) / previousTotal
+  score <- abs(round(percentage, digits = 1))
+  
+  if (score == 0) {
+    "stable"
+  } else {
+    paste(ifelse(percentage > 0, "+", "-"), score, sep="")
+  }
+}
+
+# ----
 # LAYOUT ----
 ui <- fluidPage(
   theme = "styles/main.css",
@@ -76,9 +158,7 @@ ui <- fluidPage(
       h2(class = "app__heading app__heading--section", "Recent"),
       div(
         class = "dropdown dropdown--period",
-        selectInput("period", "",
-          c("Today", "Yesterday", "Last Week", "Last Month", "Last Year")
-        )
+        selectInput("period", "", na.omit(labels$period_name))
       )
     ),
     
@@ -90,11 +170,11 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "Total Income"),
         svgIcon("income")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("income", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("incomePercent", inline = TRUE)
       )
     ),
     
@@ -106,11 +186,11 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "Active Users"),
         svgIcon("users")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("users", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("usersPercent", inline = TRUE)
       )
     ),
     
@@ -122,11 +202,11 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "New Orders"),
         svgIcon("orders")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("orders", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("ordersPercent", inline = TRUE)
       )
     ),
     # STATS COMPLAINTS ----
@@ -137,11 +217,11 @@ ui <- fluidPage(
         h3(class = "textPanel__heading", "Open Complaints"),
         svgIcon("complaints")
       ),
-      p(class = "textPanel__value", 45),
+      p(class = "textPanel__value", textOutput("complaints", inline = TRUE)),
       div(
         class = "textPanel__percentage",
         # icon
-        span("+0.5%")
+        textOutput("complaintsPercent", inline = TRUE)
       )
     ),
   ),
@@ -156,21 +236,15 @@ ui <- fluidPage(
       h2(class = "app__heading app__heading--section", "Analytics"),
       div(
         class = "dropdown dropdown--field",
-        selectInput("field", "",
-          c("Total Income", "Active Users", "New Orders", "Open Complaints")
-        )
+        selectInput("field", "", na.omit(labels$field_label))
       ),
       div(
         class = "dropdown dropdown--month",
-        selectInput("field", "",
-          c("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december")
-        )
+        selectInput("field", "", labels$month_name)
       ),
       div(
         class = "dropdown dropdown--year",
-        selectInput("field", "",
-          c(2020, 2019, 2018, 2017)
-        )
+        selectInput("field", "", years)
       ),
     ),
     
@@ -222,7 +296,7 @@ ui <- fluidPage(
       )
     ),
     
-    # FOOTER
+    # FOOTER ----
     tags$footer(
       class = "app__footer",
       tags$button(class = "button", tags$span(class = "button__text", "export")),
@@ -240,25 +314,50 @@ ui <- fluidPage(
 
 
 
+# ----
+# SERVER ----
 
-
-
-
-
-# Define server logic required to draw a histogram
 server <- function(input, output) {
-  output$distPlot <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x,
-         breaks = bins,
-         col = '#AC2476',
-         border = 'white')
+  
+  # STATS OUTPUTS ----
+  output$income <- renderText({
+    period <- getStatsValue(input$period, "income")
   })
+  output$users <- renderText({
+    period <- getStatsValue(input$period, "users")
+  })
+  output$orders <- renderText({
+    period <- getStatsValue(input$period, "orders")
+  })
+  output$complaints <- renderText({
+    period <- getStatsValue(input$period, "complaints")
+  })
+  output$incomePercent <- renderText({
+    period <- getPercentValue(input$period, "income")
+  })
+  output$usersPercent <- renderText({
+    period <- getPercentValue(input$period, "users")
+  })
+  output$ordersPercent <- renderText({
+    period <- getPercentValue(input$period, "orders")
+  })
+  output$complaintsPercent <- renderText({
+    period <- getPercentValue(input$period, "complaints")
+  })
+  
+  # HISTOGRAM OUTPUT ----
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
-# Run the application
+# Run the application ----
 shinyApp(ui = ui, server = server)
