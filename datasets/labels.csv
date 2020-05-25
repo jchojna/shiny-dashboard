@@ -1,14 +1,14 @@
-id,field,field_label,day_name,month_name,period,period_name
-1,income,Total Income,Sun,January,today,Today
-2,users,Active Users,Mon,February,yesterday,Yesterday
-3,orders,New Orders,Tue,March,week,Last Week
-4,complaints,Open Complaints,Wed,April,month,Last Month
-5,,,Thu,May,year,Last Year
-6,,,Fri,June,,
-7,,,Sat,July,,
-8,,,,August,,
-9,,,,September,,
-10,,,,October,,
-11,,,,November,,
-12,,,,December,,
-13,,,,All Months,,
+id,field,day_name,month_name,period,period_name
+1,income,Sun,January,today,Today
+2,users,Mon,February,yesterday,Yesterday
+3,orders,Tue,March,week,Last Week
+4,complaints,Wed,April,month,Last Month
+5,,Thu,May,year,Last Year
+6,,Fri,June,,
+7,,Sat,July,,
+8,,,August,,
+9,,,September,,
+10,,,October,,
+11,,,November,,
+12,,,December,,
+13,,,All Months,,

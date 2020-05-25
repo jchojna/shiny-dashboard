@@ -13,7 +13,7 @@ dataset <- dataset %>%
   separate(date, c("year", "month", "day"), "-", remove = FALSE, convert = TRUE)
 
 years <- as.vector(unlist(distinct(dataset, year)))
-lastDate <- "2020-05-21"
+lastDate <- tail(dataset, 1)$date
 yesterday <- as.character(as.Date(lastDate) %m-% days(1))
 dayBeforeYesterday <- as.character(as.Date(lastDate) %m-% days(2))
 
@@ -355,9 +355,6 @@ server <- function(input, output) {
   # HISTOGRAM OUTPUT ----
   output$histogram <- renderPlot({
     
-    print(input$field)
-    print(input$month)
-    print(input$year)
     
     
     
@@ -370,7 +367,7 @@ server <- function(input, output) {
       group_by(year) %>%
       summarize(sum = sum(income))
     
-    print(filtered_dt)
+    #print(filtered_dt)
       
       
     ggplot(filtered_dt, aes(x=year, y=sum, color="blue")) +
