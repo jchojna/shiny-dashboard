@@ -3,8 +3,9 @@ library(dplyr)
 library(readr)
 library(tidyr)
 library(lubridate)
+library(ggplot2)
 
-# VARIABLES ----
+# VARIABLES ----Znamirowice, 33-318
 dataset <- read_csv("datasets/dataset.csv")
 labels <- read_csv("datasets/labels.csv")
 
@@ -236,15 +237,20 @@ ui <- fluidPage(
       h2(class = "app__heading app__heading--section", "Analytics"),
       div(
         class = "dropdown dropdown--field",
-        selectInput("field", "", na.omit(labels$field_label))
+        selectInput("field", "", c(
+          "Total Income"    = labels$field[1],
+          "Active Users"    = labels$field[2],
+          "New Orders"      = labels$field[3],
+          "Open Complaints" = labels$field[4]
+        ))
       ),
       div(
         class = "dropdown dropdown--month",
-        selectInput("field", "", labels$month_name)
+        selectInput("month", "", labels$month_name)
       ),
       div(
         class = "dropdown dropdown--year",
-        selectInput("field", "", years)
+        selectInput("year", "", years)
       ),
     ),
     
@@ -260,7 +266,8 @@ ui <- fluidPage(
         )
       ),
       div(
-        class = "barChart"
+        class = "barChart",
+        plotOutput("histogram", width = "100%", height = "100%")
       )
     ),
     
@@ -346,17 +353,31 @@ server <- function(input, output) {
   })
   
   # HISTOGRAM OUTPUT ----
-  
-  
+  output$histogram <- renderPlot({
     
-  
-  
-  
-  
-  
-  
-  
-  
+    print(input$field)
+    print(input$month)
+    print(input$year)
+    
+    
+    
+    
+    
+    
+    
+    
+    filtered_dt <- dataset %>%
+      group_by(year) %>%
+      summarize(sum = sum(income))
+    
+    print(filtered_dt)
+      
+      
+    ggplot(filtered_dt, aes(x=year, y=sum, color="blue")) +
+      geom_col()
+      
+      
+  })
 }
 
 # Run the application ----
