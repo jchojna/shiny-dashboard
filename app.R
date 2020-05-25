@@ -246,7 +246,21 @@ ui <- fluidPage(
       ),
       div(
         class = "dropdown dropdown--month",
-        selectInput("month", "", labels$month_name)
+        selectInput("month", "", c(
+          "All Months" = 0,
+          "January"    = 1,
+          "February"   = 2,
+          "March"      = 3,
+          "April"      = 4,
+          "May"        = 5,
+          "June"       = 6,
+          "July"       = 7,
+          "August"     = 8,
+          "September"  = 9,
+          "October"    = 10,
+          "November"   = 11,
+          "December"   = 12
+        ))
       ),
       div(
         class = "dropdown dropdown--year",
@@ -355,22 +369,23 @@ server <- function(input, output) {
   # HISTOGRAM OUTPUT ----
   output$histogram <- renderPlot({
     
-    
-    
-    
-    
-    
-    
-    
-    
     filtered_dt <- dataset %>%
-      group_by(year) %>%
-      summarize(sum = sum(income))
+      filter(year == input$year)
     
-    #print(filtered_dt)
+    if (input$month != 0) {
+      filtered_dt <- filtered_dt %>%
+        filter(month == input$month) %>%
+        group_by(day)
+  
+    } else {
+      filtered_dt <- filtered_dt %>%
+        group_by(month)
+    }
+    
+    filtered_dt <- filtered_dt %>%
+      summarize(sum = sum(get(input$field)))
       
-      
-    ggplot(filtered_dt, aes(x=year, y=sum, color="blue")) +
+    ggplot(filtered_dt, aes(x=day, y=sum, color="blue")) +
       geom_col()
       
       
