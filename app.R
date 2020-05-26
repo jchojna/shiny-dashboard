@@ -5,7 +5,7 @@ library(tidyr)
 library(lubridate)
 library(ggplot2)
 
-# VARIABLES ----Znamirowice, 33-318
+# VARIABLES ----
 dataset <- read_csv("datasets/dataset.csv")
 labels <- read_csv("datasets/labels.csv")
 
@@ -95,6 +95,15 @@ getPercentValue <- function(period, field) {
     "stable"
   } else {
     paste(ifelse(percentage > 0, "+", "-"), score, sep="")
+  }
+}
+
+getBlankDF <- function(month, year) {
+  if (month == 0) {
+    data.frame(month = 1:12,sum = 0)
+  } else {
+    daysTotal <- days_in_month(make_date(year, month))
+    data.frame(day = 1:daysTotal, sum = 0)
   }
 }
 
@@ -281,7 +290,8 @@ ui <- fluidPage(
       ),
       div(
         class = "barChart",
-        plotOutput("histogram", width = "100%", height = "100%")
+        plotOutput("histogramChart", width = "100%", height = "100%"),
+        span(class = "barChart__alert", "No Data...")
       )
     ),
     
@@ -367,28 +377,36 @@ server <- function(input, output) {
   })
   
   # HISTOGRAM OUTPUT ----
-  output$histogram <- renderPlot({
-    
-    filtered_dt <- dataset %>%
+  output$histogramChart <- renderPlot({
+  
+    blankDF <- getBlankDF(input$month, input$year)
+    filteredDF <- dataset %>%
       filter(year == input$year)
     
-    if (input$month != 0) {
-      filtered_dt <- filtered_dt %>%
-        filter(month == input$month) %>%
-        group_by(day)
-  
+    # statistics for specific year
+    if (input$month == 0) {
+      filteredDF <- filteredDF %>%
+        group_by(month) %>%
+        summarize(sum = sum(get(input$field))) %>%
+        full_join(blankDF, by="month") %>%
+        transmute(month, sum = ifelse(is.na(sum.x), 0, sum.x))
+      
+    # statistics for specific year and month
     } else {
-      filtered_dt <- filtered_dt %>%
-        group_by(month)
+      filteredDF <- filteredDF %>%
+        filter(month == input$month) %>%
+        group_by(day) %>%
+        summarize(sum = sum(get(input$field))) %>%
+        full_join(blankDF, by="day") %>%
+        transmute(day, sum = ifelse(is.na(sum.x), 0, sum.x))
     }
     
-    filtered_dt <- filtered_dt %>%
-      summarize(sum = sum(get(input$field)))
-      
-    ggplot(filtered_dt, aes(x=day, y=sum, color="blue")) +
-      geom_col()
-      
-      
+    # print histogram only if the filtered dataset is not empty
+    if (is.data.frame(filteredDF) & nrow(filteredDF) > 0) {
+      firstColName <- colnames(filteredDF)[1]
+      ggplot(filteredDF, aes(get(firstColName), sum)) +
+        geom_col(width=0.6, fill="blue")
+    }
   })
 }
 
