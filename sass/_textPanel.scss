@@ -88,18 +88,5 @@
     stroke: #fff;
     stroke-width: 6;
     width: 50px;
-
-    $icons: (
-      income: $color-income,
-      users: $color-users,
-      orders: $color-orders,
-      complaints: $color-complaints,
-    );
-  
-    @each $name, $val in $icons {
-      &--#{$name} {
-        background-color: $val;
-      }
-    }
   }
 }

@@ -419,14 +419,6 @@
     stroke: #fff;
     stroke-width: 6;
     width: 50px; }
-    .textPanel__icon--income {
-      background-color: #29bfd7; }
-    .textPanel__icon--users {
-      background-color: #bcd74a; }
-    .textPanel__icon--orders {
-      background-color: #fe9833; }
-    .textPanel__icon--complaints {
-      background-color: #fa5050; }
 
 .visualPanel {
   align-items: center;

@@ -8,6 +8,12 @@ library(ggplot2)
 # VARIABLES ----
 dataset <- read_csv("datasets/dataset.csv")
 labels <- read_csv("datasets/labels.csv")
+colors <- list(
+  "income" = "#29bfd7",
+  "users" = "#bcd74a",
+  "orders" = "#fe9833",
+  "complaints" = "#fa5050"
+)
 
 dataset <- dataset %>%
   separate(date, c("year", "month", "day"), "-", remove = FALSE, convert = TRUE)
@@ -23,8 +29,9 @@ svgIcon <- function(id) {
     HTML(
       paste(
         "<svg
-          class = 'textPanel__icon textPanel__icon--", id, "'
-          viewBox = '0 0 100 100'
+          class='textPanel__icon'
+          viewBox='0 0 100 100'
+          style='background-color:", colors[id], "'
         >
           <use href = 'svg/icons.svg#", id, "'></use>
         </svg>", sep=""
@@ -378,7 +385,7 @@ server <- function(input, output) {
   
   # HISTOGRAM OUTPUT ----
   output$histogramChart <- renderPlot({
-  
+    
     blankDF <- getBlankDF(input$month, input$year)
     filteredDF <- dataset %>%
       filter(year == input$year)
@@ -405,7 +412,7 @@ server <- function(input, output) {
     if (is.data.frame(filteredDF) & nrow(filteredDF) > 0) {
       firstColName <- colnames(filteredDF)[1]
       ggplot(filteredDF, aes(get(firstColName), sum)) +
-        geom_col(width=0.6, fill="blue")
+        geom_col(width=0.6, fill=colors[input$field])
     }
   })
 }
