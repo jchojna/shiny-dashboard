@@ -159,8 +159,9 @@
 } */
 .barChart {
   background-color: #eee;
-  width: 100%;
-  height: 100%; }
+  height: 100%;
+  padding-top: 40px;
+  width: 100%; }
 
 .tooltip__heading, .tooltip__text {
   font-size: 1rem;

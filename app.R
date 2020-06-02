@@ -394,25 +394,32 @@ server <- function(input, output) {
     if (input$month == 0) {
       filteredDF <- filteredDF %>%
         group_by(month) %>%
-        summarize(sum = sum(get(input$field))) %>%
-        full_join(blankDF, by="month") %>%
-        transmute(month, sum = ifelse(is.na(sum.x), 0, sum.x))
-      
+        summarize(sum = sum(get(input$field)))
+        #full_join(blankDF, by="month") %>%
+        #transmute(month, sum = ifelse(is.na(sum.x), 0, sum.x))
+
     # statistics for specific year and month
     } else {
       filteredDF <- filteredDF %>%
         filter(month == input$month) %>%
         group_by(day) %>%
-        summarize(sum = sum(get(input$field))) %>%
-        full_join(blankDF, by="day") %>%
-        transmute(day, sum = ifelse(is.na(sum.x), 0, sum.x))
+        summarize(sum = sum(get(input$field)))
+
+      if (is.data.frame(filteredDF) & nrow(filteredDF) > 0) {
+        filteredDF <- filteredDF %>%
+          full_join(blankDF, by="day") %>%
+          transmute(day, sum = ifelse(is.na(sum.x), 0, sum.x))
+      }
     }
     
     # print histogram only if the filtered dataset is not empty
     if (is.data.frame(filteredDF) & nrow(filteredDF) > 0) {
       firstColName <- colnames(filteredDF)[1]
       ggplot(filteredDF, aes(get(firstColName), sum)) +
-        geom_col(width=0.6, fill=colors[input$field])
+        geom_col(width=0.6, fill=colors[input$field]) +
+        labs(x=NULL, y=NULL) +
+        theme_minimal() + 
+        scale_x_continuous(breaks=2:12)
     }
   })
 }
